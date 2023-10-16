@@ -71,12 +71,12 @@ class ODE_solvers:
     
 
 # Function to solve
-def f(t, x):
+def f1(t, x):
     return -4*x*np.sin(t)
 
 # Exact solution of ODE is x(t) = e^(4*cos(t) - 1)
-def exact(t):
-    return np.exp(4*np.cos(t) - 1)
+def exact1(t):
+    return np.exp(4*(np.cos(t) - 1))
 
 ## Problem 1a
 
@@ -84,16 +84,15 @@ def exact(t):
 t0 = 0
 x0 = 1
 tn = 8
-h = 0.1 # Step size intialization to a random value
+
+# Step size \Delta t = 2e-5
+h = 2**(-5)
 
 # Number of steps
 n = int((tn - t0) / h)
 # a. Euler method
 
-# Step size \Delta t = 2e-5
-h = 2e-5
-
-ode_solver_h1 = ODE_solvers(f, t0, x0, h, n)
+ode_solver_h1 = ODE_solvers(f1, t0, x0, h, n)
 
 # Solve ODE
 t, x = ode_solver_h1.euler()
@@ -111,15 +110,18 @@ t, x = ode_solver_h1.euler()
 error = np.zeros(n+1)
 error[0] = 0
 for i in range(n):
-    error[i+1] = np.abs(exact(t[i+1]) - x[i+1])
+    error[i+1] = np.abs(exact1(t[i+1]) - x[i+1])
 
 A1 = error[1]
 A2 = error[n]
 
 # Step size \Delta t = 2e-6
-h = 2e-6
+h = 2**(-6)
 
-ode_solver_h2 = ODE_solvers(f, t0, x0, h, n)
+# Number of steps
+n = int((tn - t0) / h)
+
+ode_solver_h2 = ODE_solvers(f1, t0, x0, h, n)
 
 # Solve ODE
 t, x = ode_solver_h2.euler()
@@ -137,10 +139,10 @@ t, x = ode_solver_h2.euler()
 error = np.zeros(n+1)
 error[0] = 0
 for i in range(n):
-    error[i+1] = np.abs(exact(t[i+1]) - x[i+1])
+    error[i+1] = np.abs(exact1(t[i+1]) - x[i+1])
 
 A3 = error[1]
-A4 = error[n-1]
+A4 = error[n]
 
 # print('A1 = ', A1)
 # print('A2 = ', A2)
@@ -153,9 +155,13 @@ A4 = error[n-1]
 # b. Heun method
 
 # Step size \Delta t = 2e-5
-h = 2e-5
+h = 2**(-5)
 
-t, x = ode_solver_h1.heun()
+# Number of steps
+n = int((tn - t0) / h)
+
+ode_solver_1b = ODE_solvers(f1, t0, x0, h, n)
+t, x = ode_solver_1b.heun()
 
 # # Plot solution
 # fig1, ax1 = plt.subplots(dpi=300)
@@ -170,17 +176,21 @@ t, x = ode_solver_h1.heun()
 error = np.zeros(n+1)
 error[0] = 0
 for i in range(n):
-    error[i+1] = np.abs(exact(t[i+1]) - x[i+1])
+    error[i+1] = np.abs(exact1(t[i+1]) - x[i+1])
 
 A5 = error[1]
 A6 = error[n]
 
 # b. Heun method
 
-# Step size \Delta t = 2e-6
-h = 2e-6
+# Step size \Delta t = 2e-5
+h = 2**(-6)
 
-t, x = ode_solver_h2.heun()
+# Number of steps
+n = int((tn - t0) / h)
+
+ode_solver_1b = ODE_solvers(f1, t0, x0, h, n)
+t, x = ode_solver_1b.heun()
 
 # # Plot solution
 # fig1, ax1 = plt.subplots(dpi=300)
@@ -195,7 +205,7 @@ t, x = ode_solver_h2.heun()
 error = np.zeros(n+1)
 error[0] = 0
 for i in range(n):
-    error[i+1] = np.abs(exact(t[i+1]) - x[i+1])
+    error[i+1] = np.abs(exact1(t[i+1]) - x[i+1])
 
 A7 = error[1]
 A8 = error[n]
@@ -210,9 +220,13 @@ A8 = error[n]
 # c. Runge-Kutta-2 method
 
 # Step size \Delta t = 2e-5
-h = 2e-5
+h = 2**(-5)
 
-t, x = ode_solver_h1.rk2()
+# Number of steps
+n = int((tn - t0) / h)
+
+ode_solver_1c = ODE_solvers(f1, t0, x0, h, n)
+t, x = ode_solver_1c.rk2()
 
 # # Plot solution
 # fig1, ax1 = plt.subplots(dpi=300)
@@ -227,17 +241,21 @@ t, x = ode_solver_h1.rk2()
 error = np.zeros(n+1)
 error[0] = 0
 for i in range(n):
-    error[i+1] = np.abs(exact(t[i+1]) - x[i+1])
+    error[i+1] = np.abs(exact1(t[i+1]) - x[i+1])
 
 A9 = error[1]
 A10 = error[n]
 
 # c. Runge-Kutta-2 method
 
-# Step size \Delta t = 2e-6
-h = 2e-6
+# Step size \Delta t = 2e-5
+h = 2**(-6)
 
-t, x = ode_solver_h2.rk2()
+# Number of steps
+n = int((tn - t0) / h)
+
+ode_solver_1c = ODE_solvers(f1, t0, x0, h, n)
+t, x = ode_solver_1c.rk2()
 
 # # Plot solution
 # fig1, ax1 = plt.subplots(dpi=300)
@@ -252,7 +270,7 @@ t, x = ode_solver_h2.rk2()
 error = np.zeros(n+1)
 error[0] = 0
 for i in range(n):
-    error[i+1] = np.abs(exact(t[i+1]) - x[i+1])
+    error[i+1] = np.abs(exact1(t[i+1]) - x[i+1])
 
 A11 = error[1]
 A12 = error[n]
@@ -385,11 +403,11 @@ def I(t):
     # external electrical current
     return 1/10*(5 + np.sin(np.pi*t/10))
 
-def g(t,w,v,a,b,tau):
+def g3(t,w,v,a,b,tau):
     # dw/dt
     return 1/tau*(a + v - b*w)
 
-def f(t,v,w):
+def f3(t,v,w):
     # dv/dt = f(t,v,w)
     # dw/dt = g(t,v,w)
     return v - v**3/3 - w + I(t)
@@ -399,8 +417,8 @@ def sys_diff(t,sys_diff, constants):
     a,b,tau = constants
     v, w = sys_diff
 
-    dvdt = f(t,v,w)
-    dwdt = g(t,w,v,a,b,tau)
+    dvdt = f3(t,v,w)
+    dwdt = g3(t,w,v,a,b,tau)
 
     return [dvdt, dwdt]
 
@@ -448,3 +466,24 @@ A20 = average_time_step
 
 # print('A19 = ', A19)
 # print('A20 = ', A20)
+
+print('A1 = ', A1)
+print('A2 = ', A2)
+print('A3 = ', A3)
+print('A4 = ', A4)
+print('A5 = ', A5)
+print('A6 = ', A6)
+print('A7 = ', A7)
+print('A8 = ', A8)
+print('A9 = ', A9)
+print('A10 = ', A10)
+print('A11 = ', A11)
+print('A12 = ', A12)
+print('A13 = ', A13)
+print('A14 = ', A14)
+print('A15 = ', A15)
+print('A16 = ', A16)
+print('A17 = ', A17)
+print('A18 = ', A18)
+print('A19 = ', A19)
+print('A20 = ', A20)
